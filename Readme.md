@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дмитрий Лавринович](https://up.htmlacademy.ru/javascript/19/user/488389).
-* Наставник: `Алексей Дорофеев`.
+* Наставник: [Алексей Дорофеев](https://htmlacademy.ru/profile/id299055).
 
 ---
 
