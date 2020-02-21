@@ -59,12 +59,9 @@ var template = document.querySelector('#picture').content.querySelector('a');
 
 for (var j = 1; j < photos.length; j++) {
   var element = template.cloneNode(true);
-  var elementImg = element.querySelector('.picture__img');
-  var elementComments = element.querySelector('.picture__comments');
-  var elementLikes = element.querySelector('.picture__likes');
-  elementImg.src = photos[j].url;
-  elementComments.textContent = photos[j].comments.length;
-  elementLikes.textContent = photos[j].likes;
+  element.querySelector('.picture__img').src = photos[j].url;
+  element.querySelector('.picture__comments').textContent = photos[j].comments.length;
+  element.querySelector('.picture__likes').textContent = photos[j].likes;
   fragment.appendChild(element);
 }
 
