@@ -65,5 +65,62 @@ for (var j = 1; j < photos.length; j++) {
   fragment.appendChild(element);
 }
 
-
 pictures.appendChild(fragment);
+
+// module4-task2
+
+var body = document.querySelector('body');
+var uploadFile = document.querySelector('#upload-file'); // кнопка загрузки изображения
+var formImageEditing = document.querySelector('.img-upload__overlay'); // форма редактирования изображения
+var buttonUploadCancel = document.querySelector('.img-upload__cancel'); // кнопка, закрывающая форму редактирования изображения
+var buttonChangingPhotoEffect = document.querySelector('.effect-level__pin'); // кнопка изменения глубины эффекта фотографии
+var effectLevelLine = document.querySelector('.effect-level__line'); // блок изменения глубины эффекта фотографии
+var ESC_KEY = 'Escape';
+
+var onPopupEscPress = function(evt) {
+  if (evt.key === ESC_KEY) {
+    onCloseFormImageEditing();
+  }
+}
+
+var onOpenFormImageEditing = function() {
+  body.classList.add('modal-open');
+  formImageEditing.classList.remove('hidden');
+  buttonUploadCancel.addEventListener('click', onCloseFormImageEditing);
+  document.addEventListener('keydown', onPopupEscPress);
+}
+
+var onCloseFormImageEditing = function () {
+  body.classList.remove('modal-open');
+  formImageEditing.classList.add('hidden');
+  uploadFile.value = ""; // сброс поля загрузки файла
+  buttonUploadCancel.removeEventListener('click', onCloseFormImageEditing);
+  document.removeEventListener('keydown', onPopupEscPress);
+}
+
+uploadFile.addEventListener('change', onOpenFormImageEditing);
+
+
+var onChangingDepthPhotoEffect = function() {
+  var depthPhotoEffect = effectLevelLine.offsetWidth / buttonChangingPhotoEffect.offsetLeft * 100; //определение глубины эффекта
+  // тут не очень понял, нужно ли дописывать какие то изменения или это нужно делать в будущих домашках?
+}
+
+buttonChangingPhotoEffect.addEventListener('mouseup', onChangingDepthPhotoEffec);
+
+// Валидация хештэгов
+
+var inputFieldHashtag = document.querySelector('.text__hashtags'); // записываю в переменную поле ввода хештега
+
+var textHashtags = inputFieldHashtag.split(' '); // создаю массив с хештегами, разделенными пробелом
+
+var validityFieldHashtag = inputFieldHashtag.validity;
+
+if (textHashtags.length > 5) {
+  validityFieldHashtag.valid = false;
+  inputFieldHashtag.setCustomValidity('Максимальное количество хештегов - 5')
+}
+
+for (x = 0; x < textHashtags.length; i++) {
+  // тут собираюсь проверять каждый отдельных хештег
+}
