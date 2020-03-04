@@ -76,6 +76,21 @@ var buttonUploadCancel = document.querySelector('.img-upload__cancel'); // кн�
 var buttonChangingPhotoEffect = document.querySelector('.effect-level__pin'); // кнопка изменения глубины эффекта фотографии
 var effectLevelLine = document.querySelector('.effect-level__line'); // блок изменения глубины эффекта фотографии
 var ESC_KEY = 'Escape';
+var effectLevelLine = document.querySelector('.effect-level__line'); // линия применения эффекта
+var buttonChangingPhotoEffect = document.querySelector('.effect-level__pin'); // Кнопка применения эффекта
+var effectLevel = document.querySelector('.effect-level__value'); // поле для записи уровня эффекта
+var imgPreview = document.querySelector('.img-upload__preview').querySelector('img');
+var buttonsEffectPreview = document.querySelectorAll('.effects__radio'); // собираю все кнопки превью эффектов
+var filterName = 'none'; // фильтр изображения по умолчанию
+var buttonImageSmaller = document.querySelector('.scale__control--smaller'); // кнопка уменьшения изображения
+var buttonImageBigger = document.querySelector('.scale__control--bigger'); // кнопка увеличения изображения
+var imageSizeValue = document.querySelector('.scale__control--value'); // поле, хранящее тукущий размер изображения
+var imageSize = 100; // размер изображения, по умолчанию 100
+var inputFieldHashtag = document.querySelector('.text__hashtags'); // записываю в переменную поле ввода хештега
+var MAX_HASHTAGS = 5; // максимальное кол-во Х-Т
+var errorMessage = ''; // сообщение о ошибке валидации Х-Т
+var errorMessageComment = ''; // сообщение о ошибке валидации комментария
+var textComment = document.querySelector('.text__description'); // записываю в переменную поле ввода комментария
 
 var onPopupEscPress = function(evt) {
   if (evt.key === ESC_KEY) {
@@ -88,6 +103,8 @@ var onOpenFormImageEditing = function() {
   formImageEditing.classList.remove('hidden');
   buttonUploadCancel.addEventListener('click', onCloseFormImageEditing);
   document.addEventListener('keydown', onPopupEscPress);
+  imageSize = 100;
+  imageSizeValue.value = imageSize + '%';
 }
 
 var onCloseFormImageEditing = function () {
@@ -96,31 +113,166 @@ var onCloseFormImageEditing = function () {
   uploadFile.value = ""; // сброс поля загрузки файла
   buttonUploadCancel.removeEventListener('click', onCloseFormImageEditing);
   document.removeEventListener('keydown', onPopupEscPress);
+  imgPreview.style = '';
+  imgPreview.className = '';
 }
 
 uploadFile.addEventListener('change', onOpenFormImageEditing);
 
+// ФИЛЬТРЫ ИЗОБРАЖЕНИЯ
 
+// нажатие кнопок с превью фильтра
+for (var i = 0; i < buttonsEffectPreview.length; i++) {
+  buttonsEffectPreview[i].addEventListener ('click', function(evt){
+    filterName = evt.target.value;
+    imgPreview.className = '';
+    imgPreview.classList.add('effects__preview--' + filterName);
+    imgPreview.style = '';
+    return filterName;
+  });
+}
+
+// отпускание ползунка уровня эффекта
 var onChangingDepthPhotoEffect = function() {
-  var depthPhotoEffect = effectLevelLine.offsetWidth / buttonChangingPhotoEffect.offsetLeft * 100; //определение глубины эффекта
-  // тут не очень понял, нужно ли дописывать какие то изменения или это нужно делать в будущих домашках?
+  effectLevel.value = Math.round(buttonChangingPhotoEffect.offsetLeft / effectLevelLine.offsetWidth * 100); //определение глубины эффекта
+  if (filterName === 'chrome') {
+    imgPreview.style.filter = 'grayscale(0.' + effectLevel.value + ')';
+  } else if (filterName === 'sepia') {
+    imgPreview.style.filter = 'sepia('+ effectLevel.value +'%)';
+  } else if (filterName === 'marvin') {
+    imgPreview.style.filter = 'invert('+ effectLevel.value +'%)';
+  } else if (filterName === 'phobos') {
+    imgPreview.style.filter = 'blur('+ effectLevel.value +'px)';
+  } else if (filterName === 'heat') {
+    imgPreview.style.filter = 'brightness('+ effectLevel.value +'%)';
+  } else {
+    imgPreview.style = '';
+  }
+}
+buttonChangingPhotoEffect.addEventListener('mouseup', onChangingDepthPhotoEffect);
+
+//изменение размеров изображение
+
+buttonImageSmaller.addEventListener('click', function (evt){
+  if (imageSize > 25) {
+    imageSize -= 25;
+    imgPreview.style.transform = 'scale(0.'+ imageSize +')';
+    imageSizeValue.value = imageSize + '%';
+  }
+});
+
+buttonImageBigger.addEventListener('click', function (evt){
+  if (imageSize < 100) {
+    imageSize += 25;
+    if (imageSize === 100) {
+      imgPreview.style.transform = 'scale(1)';
+    } else {
+      imgPreview.style.transform = 'scale(0.'+ imageSize +')';
+    }
+    imageSizeValue.value = imageSize + '%';
+  }
+});
+
+// ВАЛИДАЦИЯ Х-Т И КОММЕНТАРИЯ
+
+inputFieldHashtag.onfocus = function() {
+  document.removeEventListener('keydown', onPopupEscPress);
 }
 
-buttonChangingPhotoEffect.addEventListener('mouseup', onChangingDepthPhotoEffec);
-
-// Валидация хештэгов
-
-var inputFieldHashtag = document.querySelector('.text__hashtags'); // записываю в переменную поле ввода хештега
-
-var textHashtags = inputFieldHashtag.split(' '); // создаю массив с хештегами, разделенными пробелом
-
-var validityFieldHashtag = inputFieldHashtag.validity;
-
-if (textHashtags.length > 5) {
-  validityFieldHashtag.valid = false;
-  inputFieldHashtag.setCustomValidity('Максимальное количество хештегов - 5')
+textComment.onfocus = function() {
+  document.removeEventListener('keydown', onPopupEscPress);
 }
 
-for (x = 0; x < textHashtags.length; i++) {
-  // тут собираюсь проверять каждый отдельных хештег
+inputFieldHashtag.onblur = function() {
+  document.addEventListener('keydown', onPopupEscPress);
 }
+
+textComment.onblur = function() {
+  document.addEventListener('keydown', onPopupEscPress);
+}
+
+var validateHashtags = function (value) {
+
+  value = value.toLowerCase();
+  var array = value.split(/\s+/);
+
+  // проверка количества Ш-Т
+  if (array.length > MAX_HASHTAGS) {
+    errorMessage += 'Не больше 5 хэш-тегов.\n';
+  }
+
+  var presenceHashSign = false; // переменная для проверки # в начале
+  var presenceDuplicates = false; // переменная для проверки повторяющихъся ХТ
+  var minLengthHash = false; // переменная для проверки мин. длинны
+  var maxLengthHash = false; // переменная для проверки макс. длинны
+  var presenceSpecialCharacters = false; // переменная для проверки наличия спецсимволов
+
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] != '' && array[i].charAt(0) != '#') {
+      presenceHashSign = true;
+      console.log(presenceHashSign);
+    } // проверка # в начале
+    for (var y = i + 1; y < array.length; y++) {
+      if (array[i] === array[y]) {
+        presenceDuplicates = true;
+      } // проверка повторяющихъся ХТ
+    }
+    if (array[i].length < 2) {
+      minLengthHash = true;
+    } // проверка мин. длинны
+    if (array[i].length > 20) {
+      maxLengthHash = true;
+    } // проверка макс. длинны
+    var noSharp = array[i].substr(1);
+    if (/[\p{P}\p{M}\p{S}p{Z}p{C}]/u.test(noSharp)){
+      presenceSpecialCharacters = true;
+    } // корректно работает в Chrome, не работает в Firefox и Edge из-за отсутствия поддержки регулярных выражений в юникоде
+  }
+  if (presenceHashSign) {
+    errorMessage += 'Хэш-тег начинается с символа # (решётка).\n';
+  }
+  if (presenceDuplicates) {
+    errorMessage += 'Один и тот же хэш-тег не может быть использован дважды.\n';
+  }
+  if (minLengthHash) {
+    errorMessage += 'Хеш-тег не может состоять только из одной решётки.\n';
+  } else {
+    errorMessage -= 'Хеш-тег не может состоять только из одной решётки.\n';
+  }
+  if (maxLengthHash) {
+    errorMessage += 'Максимальная длина одного хэш-тега 20 символов, включая решётку.\n';
+  }
+  if (presenceSpecialCharacters) {
+    errorMessage += 'Cтрока после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы, символы пунктуации, эмодзи и т.д.\n';
+  }
+
+  if (errorMessage && inputFieldHashtag.value != '') {
+    inputFieldHashtag.setCustomValidity(errorMessage);
+  } else {
+    inputFieldHashtag.setCustomValidity('');
+    inputFieldHashtag.style.border = '';
+  }
+};
+// Шаг 2 навесить на него обработчик ошибки
+inputFieldHashtag.addEventListener('input', function () {
+  // Шаг 3 проверять значение ввода в ф-ии
+  validateHashtags(inputFieldHashtag.value);
+});
+
+var validateComment = function(comment) {
+  console.log(comment.length);
+  if (comment.length > 140) {
+    errorMessageComment += 'длина комментария не может составлять больше 140 символов';
+  }
+
+  if (errorMessageComment && textComment.value != '') {
+    textComment.setCustomValidity(errorMessageComment);
+  } else {
+    textComment.setCustomValidity('');
+    textComment.style.border = '';
+  }
+}
+
+textComment.addEventListener('input', function () {
+  validateComment(textComment.value);
+});
