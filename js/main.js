@@ -76,8 +76,6 @@ var buttonUploadCancel = document.querySelector('.img-upload__cancel'); // кн�
 var buttonChangingPhotoEffect = document.querySelector('.effect-level__pin'); // кнопка изменения глубины эффекта фотографии
 var effectLevelLine = document.querySelector('.effect-level__line'); // блок изменения глубины эффекта фотографии
 var ESC_KEY = 'Escape';
-var effectLevelLine = document.querySelector('.effect-level__line'); // линия применения эффекта
-var buttonChangingPhotoEffect = document.querySelector('.effect-level__pin'); // Кнопка применения эффекта
 var effectLevel = document.querySelector('.effect-level__value'); // поле для записи уровня эффекта
 var imgPreview = document.querySelector('.img-upload__preview').querySelector('img');
 var buttonsEffectPreview = document.querySelectorAll('.effects__radio'); // собираю все кнопки превью эффектов
@@ -92,30 +90,30 @@ var errorMessage = ''; // сообщение о ошибке валидации 
 var errorMessageComment = ''; // сообщение о ошибке валидации комментария
 var textComment = document.querySelector('.text__description'); // записываю в переменную поле ввода комментария
 
-var onPopupEscPress = function(evt) {
+var onPopupEscPress = function (evt) {
   if (evt.key === ESC_KEY) {
     onCloseFormImageEditing();
   }
-}
+};
 
-var onOpenFormImageEditing = function() {
+var onOpenFormImageEditing = function () {
   body.classList.add('modal-open');
   formImageEditing.classList.remove('hidden');
   buttonUploadCancel.addEventListener('click', onCloseFormImageEditing);
   document.addEventListener('keydown', onPopupEscPress);
   imageSize = 100;
   imageSizeValue.value = imageSize + '%';
-}
+};
 
 var onCloseFormImageEditing = function () {
   body.classList.remove('modal-open');
   formImageEditing.classList.add('hidden');
-  uploadFile.value = ""; // сброс поля загрузки файла
+  uploadFile.value = ''; // сброс поля загрузки файла
   buttonUploadCancel.removeEventListener('click', onCloseFormImageEditing);
   document.removeEventListener('keydown', onPopupEscPress);
   imgPreview.style = '';
   imgPreview.className = '';
-}
+};
 
 uploadFile.addEventListener('change', onOpenFormImageEditing);
 
@@ -123,7 +121,7 @@ uploadFile.addEventListener('change', onOpenFormImageEditing);
 
 // нажатие кнопок с превью фильтра
 for (var i = 0; i < buttonsEffectPreview.length; i++) {
-  buttonsEffectPreview[i].addEventListener ('click', function(evt){
+  buttonsEffectPreview[i].addEventListener('click', function (evt) {
     filterName = evt.target.value;
     imgPreview.className = '';
     imgPreview.classList.add('effects__preview--' + filterName);
@@ -133,41 +131,41 @@ for (var i = 0; i < buttonsEffectPreview.length; i++) {
 }
 
 // отпускание ползунка уровня эффекта
-var onChangingDepthPhotoEffect = function() {
-  effectLevel.value = Math.round(buttonChangingPhotoEffect.offsetLeft / effectLevelLine.offsetWidth * 100); //определение глубины эффекта
+var onChangingDepthPhotoEffect = function () {
+  effectLevel.value = Math.round(buttonChangingPhotoEffect.offsetLeft / effectLevelLine.offsetWidth * 100); // определение глубины эффекта
   if (filterName === 'chrome') {
     imgPreview.style.filter = 'grayscale(0.' + effectLevel.value + ')';
   } else if (filterName === 'sepia') {
-    imgPreview.style.filter = 'sepia('+ effectLevel.value +'%)';
+    imgPreview.style.filter = 'sepia(' + effectLevel.value + '%)';
   } else if (filterName === 'marvin') {
-    imgPreview.style.filter = 'invert('+ effectLevel.value +'%)';
+    imgPreview.style.filter = 'invert(' + effectLevel.value + '%)';
   } else if (filterName === 'phobos') {
-    imgPreview.style.filter = 'blur('+ effectLevel.value +'px)';
+    imgPreview.style.filter = 'blur(' + effectLevel.value + 'px)';
   } else if (filterName === 'heat') {
-    imgPreview.style.filter = 'brightness('+ effectLevel.value +'%)';
+    imgPreview.style.filter = 'brightness(' + effectLevel.value + '%)';
   } else {
     imgPreview.style = '';
   }
-}
+};
 buttonChangingPhotoEffect.addEventListener('mouseup', onChangingDepthPhotoEffect);
 
-//изменение размеров изображение
+// изменение размеров изображение
 
-buttonImageSmaller.addEventListener('click', function (evt){
+buttonImageSmaller.addEventListener('click', function () {
   if (imageSize > 25) {
     imageSize -= 25;
-    imgPreview.style.transform = 'scale(0.'+ imageSize +')';
+    imgPreview.style.transform = 'scale(0.' + imageSize + ')';
     imageSizeValue.value = imageSize + '%';
   }
 });
 
-buttonImageBigger.addEventListener('click', function (evt){
+buttonImageBigger.addEventListener('click', function () {
   if (imageSize < 100) {
     imageSize += 25;
     if (imageSize === 100) {
       imgPreview.style.transform = 'scale(1)';
     } else {
-      imgPreview.style.transform = 'scale(0.'+ imageSize +')';
+      imgPreview.style.transform = 'scale(0.' + imageSize + ')';
     }
     imageSizeValue.value = imageSize + '%';
   }
@@ -175,21 +173,21 @@ buttonImageBigger.addEventListener('click', function (evt){
 
 // ВАЛИДАЦИЯ Х-Т И КОММЕНТАРИЯ
 
-inputFieldHashtag.onfocus = function() {
+inputFieldHashtag.onfocus = function () {
   document.removeEventListener('keydown', onPopupEscPress);
-}
+};
 
-textComment.onfocus = function() {
+textComment.onfocus = function () {
   document.removeEventListener('keydown', onPopupEscPress);
-}
+};
 
-inputFieldHashtag.onblur = function() {
+inputFieldHashtag.onblur = function () {
   document.addEventListener('keydown', onPopupEscPress);
-}
+};
 
-textComment.onblur = function() {
+textComment.onblur = function () {
   document.addEventListener('keydown', onPopupEscPress);
-}
+};
 
 var validateHashtags = function (value) {
 
@@ -207,20 +205,19 @@ var validateHashtags = function (value) {
   var maxLengthHash = false; // переменная для проверки макс. длинны
   var presenceSpecialCharacters = false; // переменная для проверки наличия спецсимволов
 
-  for (var i = 0; i < array.length; i++) {
-    if (array[i] != '' && array[i].charAt(0) != '#') {
+  for (var p = 0; p < array.length; p++) {
+    if (array[p] !== '' && array[p].charAt(0) !== '#') {
       presenceHashSign = true;
-      console.log(presenceHashSign);
     } // проверка # в начале
-    for (var y = i + 1; y < array.length; y++) {
-      if (array[i] === array[y]) {
+    for (var y = p + 1; y < array.length; y++) {
+      if (array[p] === array[y]) {
         presenceDuplicates = true;
       } // проверка повторяющихъся ХТ
     }
-    if (array[i].length < 2) {
+    if (array[p].length < 2) {
       minLengthHash = true;
     } // проверка мин. длинны
-    if (array[i].length > 20) {
+    if (array[p].length > 20) {
       maxLengthHash = true;
     } // проверка макс. длинны
     var noSharp = array[i].substr(1);
@@ -246,7 +243,7 @@ var validateHashtags = function (value) {
     errorMessage += 'Cтрока после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы, символы пунктуации, эмодзи и т.д.\n';
   }
 
-  if (errorMessage && inputFieldHashtag.value != '') {
+  if (errorMessage && inputFieldHashtag.value !== '') {
     inputFieldHashtag.setCustomValidity(errorMessage);
   } else {
     inputFieldHashtag.setCustomValidity('');
@@ -259,19 +256,18 @@ inputFieldHashtag.addEventListener('input', function () {
   validateHashtags(inputFieldHashtag.value);
 });
 
-var validateComment = function(comment) {
-  console.log(comment.length);
+var validateComment = function (comment) {
   if (comment.length > 140) {
     errorMessageComment += 'длина комментария не может составлять больше 140 символов';
   }
 
-  if (errorMessageComment && textComment.value != '') {
+  if (errorMessageComment && textComment.value !== '') {
     textComment.setCustomValidity(errorMessageComment);
   } else {
     textComment.setCustomValidity('');
     textComment.style.border = '';
   }
-}
+};
 
 textComment.addEventListener('input', function () {
   validateComment(textComment.value);
