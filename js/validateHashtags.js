@@ -23,8 +23,7 @@
     var errorMessage = '';
 
     value = value.toLowerCase();
-    value = value.trim()
-    console.log(value);
+    value = value.trim();
     var array = value.split(/\s+/);
 
     // проверка количества Ш-Т
@@ -41,7 +40,7 @@
         if (array[i] === array[j]) {
           errorMessage += 'Один и тот же хэш-тег не может быть использован дважды.\n';
         }
-          break;
+        break;
       }
 
       if (array[i].length < MIN_LENGTH_HASHTAG) {
@@ -54,8 +53,7 @@
 
       if (checkValidCharacters(array[i])) {
         errorMessage += 'строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т.п.), символы пунктуации (тире, дефис, запятая и т.п.), эмодзи и т.д.\n';
-      };
-
+      }
     }
 
     if (errorMessage && inputFieldHashtag.value !== '') {

@@ -41,7 +41,7 @@
   window.fieldEditImage = {
     imageSize: imageSize,
     onPopupEscPress: onPopupEscPress,
-  }
+  };
 
 })();
 

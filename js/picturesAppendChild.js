@@ -2,7 +2,7 @@
 
 (function () {
 
-  var pictures = document.querySelector('.pictures')
+  var pictures = document.querySelector('.pictures');
   var fragment = document.createDocumentFragment();
   var template = document.querySelector('#picture').content.querySelector('a');
 

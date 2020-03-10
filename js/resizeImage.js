@@ -19,7 +19,11 @@
   buttonImageBigger.addEventListener('click', function () {
     if (imageSize < 100) {
       imageSize += 25;
-      imageSize === 100 ? imgPreview.style.transform = 'scale(1)' : imgPreview.style.transform = 'scale(0.' + imageSize + ')';
+      if (imageSize === 100) {
+        imgPreview.style.transform = 'scale(1)';
+      } else {
+        imgPreview.style.transform = 'scale(0.' + imageSize + ')';
+      }
       imageSizeValue.value = imageSize + '%';
     }
   });
