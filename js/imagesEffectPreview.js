@@ -8,6 +8,7 @@
   var buttonChangingPhotoEffect = document.querySelector('.effect-level__pin'); // кнопка изменения глубины эффекта фотографии
   var effectLevelLine = document.querySelector('.effect-level__line'); // блок изменения глубины эффекта фотографии
   var effectLevel = document.querySelector('.effect-level__value'); // поле для записи уровня эффекта
+  var effectLevelDepth = document.querySelector('.effect-level__depth'); // поле отображения полноты эффекта
 
   for (var i = 0; i < buttonsEffectPreview.length; i++) {
     buttonsEffectPreview[i].addEventListener('click', function (evt) {
@@ -19,9 +20,10 @@
   }
 
   var onChangingDepthPhotoEffect = function () {
-    effectLevel.value = Math.round(buttonChangingPhotoEffect.offsetLeft / effectLevelLine.offsetWidth * 100); // определение глубины эффекта
+
     if (filterName === 'chrome') {
       imgPreview.style.filter = 'grayscale(0.' + effectLevel.value + ')';
+      console.log(imgPreview.style.filter);
     } else if (filterName === 'sepia') {
       imgPreview.style.filter = 'sepia(' + effectLevel.value + '%)';
     } else if (filterName === 'marvin') {
@@ -34,6 +36,48 @@
       imgPreview.style = '';
     }
   };
-  buttonChangingPhotoEffect.addEventListener('mouseup', onChangingDepthPhotoEffect);
+
+  buttonChangingPhotoEffect.addEventListener('mousedown', function (evt) {
+
+    evt.preventDefault();
+
+    var startCoords = evt.clientX;
+
+    var onMouseMove = function (moveEvt) {
+
+      moveEvt.preventDefault();
+
+      var shift = startCoords - moveEvt.clientX;
+
+      startCoords = moveEvt.clientX;
+
+      if (buttonChangingPhotoEffect.offsetLeft - shift < 0) {
+        buttonChangingPhotoEffect.style.left = '0';
+        effectLevelDepth.style.width = '0';
+        effectLevel.value = 0;
+      } else if (buttonChangingPhotoEffect.offsetLeft - shift > effectLevelLine.offsetWidth) {
+        buttonChangingPhotoEffect.style.left = effectLevelLine.offsetWidth + 'px';
+        effectLevelDepth.style.width = effectLevelLine.offsetWidth + 'px';
+        effectLevel.value = 100;
+      } else {
+        buttonChangingPhotoEffect.style.left = (buttonChangingPhotoEffect.offsetLeft - shift) + 'px';
+        effectLevelDepth.style.width = (buttonChangingPhotoEffect.offsetLeft - shift) + 'px';
+        effectLevel.value = Math.round((buttonChangingPhotoEffect.offsetLeft - shift) / effectLevelLine.offsetWidth * 100);
+      }
+    };
+
+    var onMouseUp = function (upEvt) {
+
+      upEvt.preventDefault();
+
+      onChangingDepthPhotoEffect();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 
 })();

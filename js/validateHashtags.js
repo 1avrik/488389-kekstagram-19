@@ -25,6 +25,7 @@
     value = value.toLowerCase();
     value = value.trim();
     var array = value.split(/\s+/);
+    var hasTwinsTags = false;
 
     // проверка количества Ш-Т
     if (array.length > MAX_HASHTAGS) {
@@ -37,8 +38,9 @@
       }
 
       for (var j = i + 1; j < array.length; i++) {
-        if (array[i] === array[j]) {
+        if (!hasTwinsTags && array[i] === array[j]) {
           errorMessage += 'Один и тот же хэш-тег не может быть использован дважды.\n';
+          hasTwinsTags = true;
         }
         break;
       }
