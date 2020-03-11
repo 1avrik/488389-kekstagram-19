@@ -23,7 +23,6 @@
 
     if (filterName === 'chrome') {
       imgPreview.style.filter = 'grayscale(0.' + effectLevel.value + ')';
-      console.log(imgPreview.style.filter);
     } else if (filterName === 'sepia') {
       imgPreview.style.filter = 'sepia(' + effectLevel.value + '%)';
     } else if (filterName === 'marvin') {
