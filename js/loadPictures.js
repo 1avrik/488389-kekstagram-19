@@ -9,7 +9,7 @@
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
-    xhr.open('GET', URL);
+
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
@@ -19,10 +19,20 @@
       }
     });
 
+    xhr.addEventListener('error', function () {
+      onError('Произошла ошибка соединения');
+    });
+    xhr.addEventListener('timeout', function () {
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    });
+
+    xhr.timeout = 10000; // 10s
+
+    xhr.open('GET', URL);
     xhr.send();
   };
 
-  window.load(function (pictures) {
+  var successHandler = function (pictures) {
     var picturesTag = document.querySelector('.pictures');
     var fragment = document.createDocumentFragment();
     var template = document.querySelector('#picture').content.querySelector('a');
@@ -36,6 +46,20 @@
     }
 
     picturesTag.appendChild(fragment);
-  });
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; padding: 5px;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '20px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.load(successHandler, errorHandler);
 
 })();
