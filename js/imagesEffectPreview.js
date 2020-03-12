@@ -34,7 +34,6 @@
     } else {
       imgPreview.style = '';
     }
-    console.log(imgPreview.style.filter)
   };
 
   buttonChangingPhotoEffect.addEventListener('mousedown', function (evt) {
