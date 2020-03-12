@@ -22,18 +22,19 @@
   var onChangingDepthPhotoEffect = function () {
 
     if (filterName === 'chrome') {
-      imgPreview.style.filter = 'grayscale(0.' + effectLevel.value + ')';
+      imgPreview.style.filter = 'grayscale(' + effectLevel.value + ')';
     } else if (filterName === 'sepia') {
-      imgPreview.style.filter = 'sepia(' + effectLevel.value + '%)';
+      imgPreview.style.filter = 'sepia(' + effectLevel.value * 100 + '%)';
     } else if (filterName === 'marvin') {
-      imgPreview.style.filter = 'invert(' + effectLevel.value + '%)';
+      imgPreview.style.filter = 'invert(' + effectLevel.value * 100 + '%)';
     } else if (filterName === 'phobos') {
-      imgPreview.style.filter = 'blur(' + effectLevel.value + 'px)';
+      imgPreview.style.filter = 'blur(' + effectLevel.value * 10 + 'px)';
     } else if (filterName === 'heat') {
-      imgPreview.style.filter = 'brightness(' + effectLevel.value + '%)';
+      imgPreview.style.filter = 'brightness(' + effectLevel.value * 300 + '%)';
     } else {
       imgPreview.style = '';
     }
+    console.log(imgPreview.style.filter)
   };
 
   buttonChangingPhotoEffect.addEventListener('mousedown', function (evt) {
@@ -57,11 +58,12 @@
       } else if (buttonChangingPhotoEffect.offsetLeft - shift > effectLevelLine.offsetWidth) {
         buttonChangingPhotoEffect.style.left = effectLevelLine.offsetWidth + 'px';
         effectLevelDepth.style.width = effectLevelLine.offsetWidth + 'px';
-        effectLevel.value = 100;
+        effectLevel.value = 1;
       } else {
         buttonChangingPhotoEffect.style.left = (buttonChangingPhotoEffect.offsetLeft - shift) + 'px';
         effectLevelDepth.style.width = (buttonChangingPhotoEffect.offsetLeft - shift) + 'px';
-        effectLevel.value = Math.round((buttonChangingPhotoEffect.offsetLeft - shift) / effectLevelLine.offsetWidth * 100);
+        effectLevel.value = (buttonChangingPhotoEffect.offsetLeft - shift) / effectLevelLine.offsetWidth;
+        effectLevel.value = Math.round(effectLevel.value * 100) / 100;
       }
     };
 
