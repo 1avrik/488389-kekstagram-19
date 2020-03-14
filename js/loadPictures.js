@@ -48,7 +48,7 @@
 
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; padding: 5px;';
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; padding: 7px;';
     node.style.position = 'absolute';
     node.style.left = 0;
     node.style.right = 0;
