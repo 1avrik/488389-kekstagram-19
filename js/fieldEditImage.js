@@ -10,15 +10,17 @@
   var imgPreview = document.querySelector('.img-upload__preview').querySelector('img'); // превью загружаемого изображения
   var uploadFile = document.querySelector('#upload-file'); // кнопка загрузки изображения
   var imageSize = 100; // размер изображения по умолчанию
+  var effectLevelSlider = document.querySelector('.img-upload__effect-level'); // весь слайдер с эффектами
 
   var onCloseFormImageEditing = function () {
     body.classList.remove('modal-open');
     formImageEditing.classList.add('hidden');
     buttonUploadCancel.removeEventListener('click', onCloseFormImageEditing);
     document.removeEventListener('keydown', onPopupEscPress);
-    imgPreview.style = ''; // сброс стилей
-    imgPreview.className = ''; // сброс классов
-    uploadFile.value = ''; // сброс поля загрузки файла
+    imgPreview.style = '';
+    imgPreview.className = '';
+    uploadFile.value = '';
+    effectLevelSlider.classList.remove('hidden');
   };
 
   var onPopupEscPress = function (evt) {

@@ -9,15 +9,7 @@
   var effectLevelLine = document.querySelector('.effect-level__line'); // блок изменения глубины эффекта фотографии
   var effectLevel = document.querySelector('.effect-level__value'); // поле для записи уровня эффекта
   var effectLevelDepth = document.querySelector('.effect-level__depth'); // поле отображения полноты эффекта
-
-  for (var i = 0; i < buttonsEffectPreview.length; i++) {
-    buttonsEffectPreview[i].addEventListener('click', function (evt) {
-      filterName = evt.target.value;
-      imgPreview.className = '';
-      imgPreview.classList.add('effects__preview--' + filterName);
-      imgPreview.style = '';
-    });
-  }
+  var effectLevelSlider = document.querySelector('.img-upload__effect-level'); // весь слайдер с эффектами
 
   var onChangingDepthPhotoEffect = function () {
 
@@ -35,6 +27,23 @@
       imgPreview.style = '';
     }
   };
+
+  for (var i = 0; i < buttonsEffectPreview.length; i++) {
+    buttonsEffectPreview[i].addEventListener('click', function (evt) {
+      filterName = evt.target.value;
+      if (filterName !== 'none') {
+        imgPreview.className = '';
+        imgPreview.classList.add('effects__preview--' + filterName);
+        imgPreview.style = '';
+        effectLevelSlider.classList.remove('hidden');
+        onChangingDepthPhotoEffect();
+      } else {
+        effectLevelSlider.classList.add('hidden');
+        imgPreview.className = '';
+      }
+
+    });
+  }
 
   buttonChangingPhotoEffect.addEventListener('mousedown', function (evt) {
 
