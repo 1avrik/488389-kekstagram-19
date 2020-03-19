@@ -2,6 +2,9 @@
 
 (function () {
 
+  var PROPORTION_EFFECT = 100;
+  var MIN_VALUE_EFFECT = 1;
+  var MAX_VALUE_EFFECT = 3;
   var buttonsEffectPreview = document.querySelectorAll('.effects__radio'); // собираю все кнопки превью эффектов
   var imgPreview = document.querySelector('.img-upload__preview').querySelector('img'); // превью загружаемого изображения
   var filterName = ''; // переменная для записи значения фильтра
@@ -14,15 +17,16 @@
   var onChangingDepthPhotoEffect = function () {
 
     if (filterName === 'chrome') {
-      imgPreview.style.filter = 'grayscale(' + effectLevel.value + ')';
+      // imgPreview.style.filter = 'grayscale(' + effectLevel.value + ')';
+      imgPreview.style.filter = 'grayscale(' + effectLevel.value / PROPORTION_EFFECT + ')';
     } else if (filterName === 'sepia') {
-      imgPreview.style.filter = 'sepia(' + effectLevel.value * 100 + '%)';
+      imgPreview.style.filter = 'sepia(' + effectLevel.value / PROPORTION_EFFECT + ')';
     } else if (filterName === 'marvin') {
-      imgPreview.style.filter = 'invert(' + effectLevel.value * 100 + '%)';
+      imgPreview.style.filter = 'invert(' + effectLevel.value + '%)';
     } else if (filterName === 'phobos') {
-      imgPreview.style.filter = 'blur(' + effectLevel.value * 10 + 'px)';
+      imgPreview.style.filter = 'blur(' + MAX_VALUE_EFFECT / PROPORTION_EFFECT * effectLevel.value + 'px)';
     } else if (filterName === 'heat') {
-      imgPreview.style.filter = 'brightness(' + effectLevel.value * 300 + '%)';
+      imgPreview.style.filter = 'brightness(' + ((effectLevel.value / PROPORTION_EFFECT) * (MAX_VALUE_EFFECT - MIN_VALUE_EFFECT) + MIN_VALUE_EFFECT) + ')';
     } else {
       imgPreview.style = '';
     }
@@ -66,12 +70,12 @@
       } else if (buttonChangingPhotoEffect.offsetLeft - shift > effectLevelLine.offsetWidth) {
         buttonChangingPhotoEffect.style.left = effectLevelLine.offsetWidth + 'px';
         effectLevelDepth.style.width = effectLevelLine.offsetWidth + 'px';
-        effectLevel.value = 1;
+        effectLevel.value = 100;
       } else {
         buttonChangingPhotoEffect.style.left = (buttonChangingPhotoEffect.offsetLeft - shift) + 'px';
         effectLevelDepth.style.width = (buttonChangingPhotoEffect.offsetLeft - shift) + 'px';
         effectLevel.value = (buttonChangingPhotoEffect.offsetLeft - shift) / effectLevelLine.offsetWidth;
-        effectLevel.value = Math.round(effectLevel.value * 100) / 100;
+        effectLevel.value = Math.round(effectLevel.value * 100);
       }
     };
 
@@ -87,6 +91,8 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+
+    return effectLevel.value;
   });
 
 })();
