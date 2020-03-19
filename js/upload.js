@@ -27,15 +27,15 @@
     window.upload(new FormData(form), function (status) {
       if (status === 200) {
         fieldEditImage.classList.add('hidden');
-        var element = success.cloneNode(true);
-        main.appendChild(element);
+        var elementSuc = success.cloneNode(true);
+        main.appendChild(elementSuc);
         var successButton = document.querySelector('.success__button');
         var successMain = document.querySelector('.success');
         successButton.addEventListener('click', function () {
           successMain.remove();
         });
-        document.addEventListener('keydown', function (evt) {
-          if (evt.key === ESC_KEY) {
+        document.addEventListener('keydown', function (keyEvt) {
+          if (keyEvt.key === ESC_KEY) {
             successMain.remove();
           }
         });
@@ -44,15 +44,15 @@
         });
       } else {
         fieldEditImage.classList.add('hidden');
-        var element = error.cloneNode(true);
-        main.appendChild(element);
+        var elementErr = error.cloneNode(true);
+        main.appendChild(elementErr);
         var errorButton = document.querySelector('.error__button');
         var errorMain = document.querySelector('.error');
         errorButton.addEventListener('click', function () {
           errorMain.remove();
         });
-        document.addEventListener('keydown', function (evt) {
-          if (evt.key === ESC_KEY) {
+        document.addEventListener('keydown', function (keyEvt) {
+          if (keyEvt.key === ESC_KEY) {
             errorMain.remove();
           }
         });
