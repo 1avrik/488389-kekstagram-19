@@ -22,7 +22,7 @@
       imageSizeValue.value = imageSize + '%';
     }
 
-  }
+  };
 
   var onIncreasePicture = function () {
 

@@ -23,10 +23,37 @@
   var fieldEditImage = document.querySelector('.img-upload__overlay');
   var ESC_KEY = 'Escape';
 
+  var formReset = function () {
+
+    var uploadFile = document.querySelector('#upload-file'); // кнопка загрузки изображения
+    var textHashtags = document.querySelector('.text__hashtags');
+    var textDescription = document.querySelector('.text__description');
+    var effectLevelSlider = document.querySelector('.img-upload__effect-level');
+    var imgPreview = document.querySelector('.img-upload__preview').querySelector('img');
+    var radioButtons = document.querySelectorAll('.effects__radio');
+
+    uploadFile.value = '';
+    textHashtags.value = '';
+    textDescription.value = '';
+    effectLevelSlider.classList.add('hidden');
+    imgPreview.className = '';
+    imgPreview.style = '';
+
+    for (var i = 0; i < radioButtons.length; i++) {
+      if (radioButtons[i].value !== 'none') {
+        radioButtons[i].checked = false;
+      } else {
+        radioButtons[i].checked = true;
+      }
+    }
+
+  };
+
   form.addEventListener('submit', function (evt) {
     window.upload(new FormData(form), function (status) {
       if (status === 200) {
         fieldEditImage.classList.add('hidden');
+        formReset();
         var elementSuc = success.cloneNode(true);
         main.appendChild(elementSuc);
         var successButton = document.querySelector('.success__button');
@@ -44,6 +71,7 @@
         });
       } else {
         fieldEditImage.classList.add('hidden');
+        formReset();
         var elementErr = error.cloneNode(true);
         main.appendChild(elementErr);
         var errorButton = document.querySelector('.error__button');

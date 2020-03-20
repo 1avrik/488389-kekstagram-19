@@ -27,18 +27,18 @@
     } else if (filterName === 'heat') {
       imgPreview.style.filter = 'brightness(' + ((effectLevel.value / PROPORTION_EFFECT) * (MAX_VALUE_EFFECT - MIN_VALUE_EFFECT) + MIN_VALUE_EFFECT) + ')';
     } else {
-      imgPreview.style = '';
+      imgPreview.style.filter = '';
     }
 
   };
 
   for (var i = 0; i < buttonsEffectPreview.length; i++) {
     buttonsEffectPreview[i].addEventListener('click', function (evt) {
-    filterName = evt.target.value;
+      filterName = evt.target.value;
       if (filterName !== 'none') {
         imgPreview.className = '';
         imgPreview.classList.add('effects__preview--' + filterName);
-        imgPreview.style = '';
+        imgPreview.style.filter = '';
         effectLevelSlider.classList.remove('hidden');
         buttonChangingPhotoEffect.style.left = effectLevelLine.offsetWidth + 'px';
         effectLevelDepth.style.width = effectLevelLine.offsetWidth + 'px';
