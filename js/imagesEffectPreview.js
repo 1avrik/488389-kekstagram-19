@@ -17,7 +17,6 @@
   var onChangingDepthPhotoEffect = function () {
 
     if (filterName === 'chrome') {
-      // imgPreview.style.filter = 'grayscale(' + effectLevel.value + ')';
       imgPreview.style.filter = 'grayscale(' + effectLevel.value / PROPORTION_EFFECT + ')';
     } else if (filterName === 'sepia') {
       imgPreview.style.filter = 'sepia(' + effectLevel.value / PROPORTION_EFFECT + ')';
@@ -30,20 +29,26 @@
     } else {
       imgPreview.style = '';
     }
+
   };
 
   for (var i = 0; i < buttonsEffectPreview.length; i++) {
     buttonsEffectPreview[i].addEventListener('click', function (evt) {
-      filterName = evt.target.value;
+    filterName = evt.target.value;
       if (filterName !== 'none') {
         imgPreview.className = '';
         imgPreview.classList.add('effects__preview--' + filterName);
         imgPreview.style = '';
         effectLevelSlider.classList.remove('hidden');
+        buttonChangingPhotoEffect.style.left = effectLevelLine.offsetWidth + 'px';
+        effectLevelDepth.style.width = effectLevelLine.offsetWidth + 'px';
+        effectLevel.value = 100;
         onChangingDepthPhotoEffect();
+
       } else {
-        effectLevelSlider.classList.add('hidden');
         imgPreview.className = '';
+        imgPreview.style = '';
+        effectLevelSlider.classList.add('hidden');
       }
 
     });

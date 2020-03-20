@@ -1443,3 +1443,17 @@ main {
     grid-row: 1 / span 3;
   }
 }
+
+.error-message {
+  z-index: 100;
+  margin: 0 auto;
+  text-align: center;
+  background-color: red;
+  padding: 7px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  font-size: 20px;
+  color: white;
+}

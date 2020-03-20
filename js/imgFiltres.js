@@ -52,7 +52,7 @@
     for (var i = 0; i < buttonsFilter.length; i++) {
       buttonsFilter[i].addEventListener('click', function (evt) {
         doFilterButtonsNotActive();
-        evt.explicitOriginalTarget.classList.add('img-filters__button--active');
+        evt.target.classList.add('img-filters__button--active');
         if (evt.target.id === 'filter-random') {
           debounce(function () {
             deleteRenderedPictures();
@@ -74,7 +74,6 @@
         }
       });
     }
-
   };
 
 })();
