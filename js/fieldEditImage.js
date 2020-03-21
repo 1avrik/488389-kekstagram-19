@@ -3,6 +3,9 @@
 (function () {
 
   var ESC_KEY = 'Escape';
+  var MIN_IMAGE_SIZE = 25;
+  var MAX_IMAGE_SIZE = 100;
+  var STEP_IMAGE_SIZE = 25;
   var body = document.querySelector('body');
   var formImageEditing = document.querySelector('.img-upload__overlay'); // форма редактирования изображения
   var buttonUploadCancel = document.querySelector('.img-upload__cancel'); // кнопка, закрывающая форму редактирования изображения
@@ -16,8 +19,8 @@
 
   var onReducePicture = function () {
 
-    if (imageSize > 25) {
-      imageSize -= 25;
+    if (imageSize > MIN_IMAGE_SIZE) {
+      imageSize -= STEP_IMAGE_SIZE;
       imgPreview.style.transform = 'scale(0.' + imageSize + ')';
       imageSizeValue.value = imageSize + '%';
     }
@@ -26,9 +29,9 @@
 
   var onIncreasePicture = function () {
 
-    if (imageSize < 100) {
-      imageSize += 25;
-      if (imageSize === 100) {
+    if (imageSize < MAX_IMAGE_SIZE) {
+      imageSize += STEP_IMAGE_SIZE;
+      if (imageSize === MAX_IMAGE_SIZE) {
         imgPreview.style.transform = 'scale(1)';
       } else {
         imgPreview.style.transform = 'scale(0.' + imageSize + ')';
@@ -48,7 +51,6 @@
     imgPreview.style = '';
     imgPreview.className = '';
     uploadFile.value = '';
-    effectLevelSlider.classList.remove('hidden');
   };
 
   var onPopupEscPress = function (evt) {
@@ -60,12 +62,13 @@
   var onOpenFormImageEditing = function () {
     body.classList.add('modal-open');
     formImageEditing.classList.remove('hidden');
-    imageSize = 100;
+    imageSize = MAX_IMAGE_SIZE;
     imageSizeValue.value = imageSize + '%';
     buttonImageSmaller.addEventListener('click', onReducePicture);
     buttonImageBigger.addEventListener('click', onIncreasePicture);
     buttonUploadCancel.addEventListener('click', onCloseFormImageEditing);
     document.addEventListener('keydown', onPopupEscPress);
+    effectLevelSlider.classList.add('hidden');
   };
 
   uploadFile.addEventListener('change', onOpenFormImageEditing);

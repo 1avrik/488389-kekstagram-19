@@ -47,7 +47,7 @@
 
       } else {
         imgPreview.className = '';
-        imgPreview.style = '';
+        imgPreview.style.filter = '';
         effectLevelSlider.classList.add('hidden');
       }
 
@@ -82,13 +82,14 @@
         effectLevel.value = (buttonChangingPhotoEffect.offsetLeft - shift) / effectLevelLine.offsetWidth;
         effectLevel.value = Math.round(effectLevel.value * 100);
       }
+
+      onChangingDepthPhotoEffect();
+
     };
 
     var onMouseUp = function (upEvt) {
 
       upEvt.preventDefault();
-
-      onChangingDepthPhotoEffect();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
